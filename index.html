@@ -80,9 +80,9 @@ width:0%;
 
 <script>
 
-const weaponGroups = [
+const weaponData={
 
-{ name:"シューター", folder:"shooter", weapons:[
+shooter:[
 "bold.png",
 "wakaba.png",
 "sharp.png",
@@ -97,60 +97,60 @@ const weaponGroups = [
 "l3.png",
 "h3.png",
 "bottle.png"
-]},
+],
 
-{ name:"ローラー", folder:"roller", weapons:[
+roller:[
 "carbon.png",
 "dynamo.png",
 "splat.png",
 "variable.png",
 "wide.png"
-]},
+],
 
-{ name:"チャージャー", folder:"charger", weapons:[
+charger:[
 "squic.png",
 "splat.png",
 "liter.png",
 "take.png",
 "soi.png",
 "pen.png"
-]},
+],
 
-{ name:"スロッシャー", folder:"slosher", weapons:[
+slosher:[
 "bucket.png",
 "hissen.png",
 "screw.png",
 "over.png",
 "ex.png",
 "mop.png"
-]},
+],
 
-{ name:"スピナー", folder:"spinner", weapons:[
+spinner:[
 "splat.png",
 "barrel.png",
 "hyd.png",
 "cugel.png",
 "norch.png",
 "ixa.png"
-]},
+],
 
-{ name:"マニューバー", folder:"dualies", weapons:[
+dualies:[
 "splat.png",
 "splat.png",
 "kelbin.png",
 "dual.png",
 "quad.png",
 "gaen.png"
-]},
+],
 
-{ name:"シェルター", folder:"shelter", weapons:[
+shelter:[
 "para.png",
 "camp.png",
 "spy.png",
 "kasa.png"
-]},
+],
   
-{ name:"ブラスター", folder:"blaster", weapons:[
+blaster:[
 "nova.png",
 "hot.png",
 "long.png",
@@ -158,27 +158,27 @@ const weaponGroups = [
 "rapid.png",
 "rapide.png",
 "sblast.png"
-]},
+],
 
-{ name:"フデ", folder:"brush", weapons:[
+brush:[
 "pablo.png",
 "hokusai.png",
 "fin.png"
-]},
+],
 
-{ name:"ストリンガー", folder:"stringer", weapons:[
+stringer:[
 "tri.png",
 "lact.png",
 "fluid.png"
-]},
+],
 
-{ name:"ワイパー", folder:"wiper", weapons:[
+wiper:[
 "jim.png",
 "drive.png",
 "dental.png"
-]},
+],
 
-{ name:"クマ武器", folder:"kuma", weapons:[
+kuma:[
 "stringer.png",
 "blaster.png",
 "shelter.png",
@@ -187,55 +187,59 @@ const weaponGroups = [
 "charger.png",
 "dualies.png",
 "roller.png"
-]}
+]
 
 }
 
-let state = JSON.parse(localStorage.getItem("salmonState") || "{}")
+let state=JSON.parse(localStorage.getItem("salmonState")||"{}")
 
 function save(){
-localStorage.setItem("salmonState", JSON.stringify(state))
+localStorage.setItem("salmonState",JSON.stringify(state))
 }
 
-function toggle(id,btn){
+function toggle(id,el){
 
-state[id] = !state[id]
+state[id]=!state[id]
 
-if(state[id]) btn.classList.add("done")
-else btn.classList.remove("done")
+if(state[id]){
+el.classList.add("done")
+}else{
+el.classList.remove("done")
+}
 
 save()
+
 updateProgress()
 
 }
 
 function createUI(){
 
-const container=document.getElementById("weaponContainer")
+let container=document.getElementById("weaponContainer")
 
-weaponGroups.forEach(group=>{
+for(let group in weaponData){
 
-const row=document.createElement("div")
+let row=document.createElement("div")
+
 row.className="weaponRow"
 
-const title=document.createElement("h3")
-title.innerText=group.name
+let title=document.createElement("h3")
+title.innerText=group
 
-const grid=document.createElement("div")
+let grid=document.createElement("div")
 grid.className="weaponGrid"
 
-group.weapons.forEach(name=>{
+weaponData[group].forEach(name=>{
 
-const btn=document.createElement("button")
+let btn=document.createElement("button")
 btn.className="weaponBtn"
 
-const img=document.createElement("img")
-
-img.src=`weapons/${group.folder}/${name}`
+let img=document.createElement("img")
+img.src="weapons/"+group+"/"+name
 
 btn.appendChild(img)
 
-const id=group.folder+"_"+name
+let id=group+"_"+name
 
 if(state[id]) btn.classList.add("done")
 
@@ -250,7 +254,7 @@ row.appendChild(grid)
 
 container.appendChild(row)
 
-})
+}
 
 }
 
@@ -259,19 +263,25 @@ function updateProgress(){
 let total=0
 let done=0
 
-weaponGroups.forEach(group=>{
+for(let group in weaponData){
 
-group.weapons.forEach(name=>{
+let gTotal=weaponData[group].length
+let gDone=0
 
-const id=group.folder+"_"+name
+weaponData[group].forEach(name=>{
+
+let id=group+"_"+name
 
 total++
 
-if(state[id]) done++
+if(state[id]){
+done++
+gDone++
+}
 
 })
 
-})
+}
 
 let percent=Math.floor(done/total*100)
 
@@ -283,6 +293,7 @@ done+" / "+total+" ("+percent+"%)"
 }
 
 createUI()
+
 updateProgress()
 
 </script>
