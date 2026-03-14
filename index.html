@@ -23,15 +23,15 @@ margin:20px 0;
 }
 
 .weaponGrid{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:6px;
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:10px;
+justify-items:center;
 }
 
 .weaponBtn{
-width:60px;
-height:60px;
+width:80px;
+height:80px;
 border:none;
 background:none;
 padding:0;
@@ -93,6 +93,14 @@ color:white;
 cursor:pointer;
 }
 
+h2{
+font-size:32px;
+}
+
+h3{
+font-size:22px;
+}
+
 </style>
 
 </head>
@@ -102,12 +110,15 @@ cursor:pointer;
 <h2>サーモンラン武器ビンゴ</h2>
 
 <button class="resetBtn" onclick="resetAll()">リセット</button>
+<button onclick="showAll()">すべて</button>
+<button onclick="showRemain()">未取得のみ</button>
 
 <div class="progressBar">
 <div id="totalBar" class="fill"></div>
 </div>
 
 <div id="totalText"></div>
+<div id="remainText"></div>
 
 <div class="container" id="weaponContainer"></div>
 
@@ -331,7 +342,7 @@ document.getElementById("bar_"+group).style.width=gPercent+"%"
 
 let title=document.getElementById("title_"+group)
 
-title.innerText=group+" "+gDone+" / "+gTotal
+title.innerText=group+" "+gDone+" / "+gTotal+" ("+gPercent+"%)"
 
 if(gDone===gTotal){
 title.innerText+=" ✅COMPLETE"
@@ -353,6 +364,9 @@ if(done===total){
 document.getElementById("totalText").innerText+=" 🎉ALL COMPLETE!"
 }
 
+let remain=total-done
+document.getElementById("remainText").innerText="残り "+remain+" 武器"
+  
 }
   
 function resetAll(){
@@ -367,6 +381,28 @@ btn.classList.remove("done")
 })
 
 updateProgress()
+
+}
+
+function showAll(){
+
+document.querySelectorAll(".weaponBtn").forEach(btn=>{
+btn.style.display="inline-block"
+})
+
+}
+
+function showRemain(){
+
+document.querySelectorAll(".weaponBtn").forEach(btn=>{
+
+if(btn.classList.contains("done")){
+btn.style.display="none"
+}else{
+btn.style.display=""
+}
+
+})
 
 }
 
