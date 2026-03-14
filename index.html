@@ -15,6 +15,7 @@ text-align:center;
 
 .container{
 max-width:1000px;
+width:95%;
 margin:auto;
 }
 
@@ -32,7 +33,7 @@ box-shadow:0 4px 10px rgba(0,0,0,0.4);
 
 .weaponGrid{
 display:grid;
-grid-template-columns:repeat(7,110px);
+grid-template-columns:repeat(auto-fit, minmax(110px,110px));
 gap:18px;
 justify-content:center;
 margin-top:10px;
@@ -114,10 +115,6 @@ font-size:32px;
 
 h3{
 font-size:22px;
-}
-
-.weaponGrid.kuma{
-grid-template-columns:repeat(8,110px);
 }
 
 button{
