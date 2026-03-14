@@ -77,6 +77,22 @@ background:#ff7b00;
 width:0%;
 }
 
+.complete{
+color:#ffd700;
+font-weight:bold;
+}
+
+.resetBtn{
+margin:20px;
+padding:8px 20px;
+font-size:16px;
+background:#ff7b00;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
 </style>
 
 </head>
@@ -84,6 +100,8 @@ width:0%;
 <body>
 
 <h2>サーモンラン武器ビンゴ</h2>
+
+<button class="resetBtn" onclick="resetAll()">リセット</button>
 
 <div class="progressBar">
 <div id="totalBar" class="fill"></div>
@@ -239,6 +257,7 @@ let row=document.createElement("div")
 row.className="weaponRow"
 
 let title=document.createElement("h3")
+title.id="title_"+group
 title.innerText=group
 
 let bar=document.createElement("div")
@@ -307,7 +326,19 @@ gDone++
 })
 
 let gPercent=Math.floor(gDone/gTotal*100)
+
 document.getElementById("bar_"+group).style.width=gPercent+"%"
+
+let title=document.getElementById("title_"+group)
+
+title.innerText=group+" "+gDone+" / "+gTotal
+
+if(gDone===gTotal){
+title.innerText+=" ✅COMPLETE"
+title.classList.add("complete")
+}else{
+title.classList.remove("complete")
+}
 
 }
 
@@ -317,6 +348,23 @@ document.getElementById("totalBar").style.width=percent+"%"
 
 document.getElementById("totalText").innerText=
 done+" / "+total+" ("+percent+"%)"
+
+if(done===total){
+document.getElementById("totalText").innerText+=" 🎉ALL COMPLETE!"
+}
+
+function resetAll(){
+
+if(!confirm("進行状況をリセットしますか？")) return
+
+state={}
+save()
+
+document.querySelectorAll(".weaponBtn").forEach(btn=>{
+btn.classList.remove("done")
+})
+
+updateProgress()
 
 }
 
