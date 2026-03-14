@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Salmon Run Bingo</title>
+<title>サーモンラン武器ビンゴ</title>
 
 <style>
 
@@ -13,83 +13,57 @@ font-family:sans-serif;
 text-align:center;
 }
 
-.wrapper{
+.container{
 max-width:900px;
 margin:auto;
 }
 
-.board{
-position:relative;
+.weaponRow{
+margin:20px 0;
 }
 
-.board img{
-width:100%;
+.weaponGrid{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:6px;
 }
 
-/* ビンゴ部分だけ */
-.grid{
-position:absolute;
-
-top:22%;
-left:5%;
-
-width:90%;
-height:60%;
-
-display:grid;
-grid-template-columns:repeat(8,1fr);
-grid-template-rows:repeat(8,1fr);
-}
-
-.cell{
+.weaponBtn{
+width:60px;
+height:60px;
 border:none;
-background:rgba(255,120,0,0);
+background:none;
+padding:0;
 }
 
-.cell.done{
-background:rgba(255,120,0,0.45);
+.weaponBtn img{
+width:100%;
+height:100%;
 }
 
-/* 進捗バー */
+.done{
+background:rgba(255,140,0,0.5);
+border-radius:6px;
+}
 
 .progressBar{
 width:80%;
-height:20px;
+height:18px;
 background:#333;
 margin:auto;
 border-radius:10px;
 overflow:hidden;
 }
 
-.progressFill{
+.fill{
 height:100%;
 background:#ff7b00;
 width:0%;
 }
 
-.progressText{
-margin:10px;
-font-size:18px;
-}
-
-.resetBtn{
-margin:10px;
-padding:10px 20px;
-font-size:16px;
-background:#ff4d4d;
-border:none;
-border-radius:6px;
-color:white;
-cursor:pointer;
-}
-
-.groupList{
-margin-top:10px;
-font-size:14px;
-line-height:1.6;
-}
-
 </style>
+
 </head>
 
 <body>
@@ -97,179 +71,230 @@ line-height:1.6;
 <h2>サーモンラン武器ビンゴ</h2>
 
 <div class="progressBar">
-<div class="progressFill" id="bar"></div>
+<div id="totalBar" class="fill"></div>
 </div>
 
-<div class="progressText" id="total"></div>
+<div id="totalText"></div>
 
-<button class="resetBtn" onclick="resetProgress()">リセット</button>
-
-<div class="groupList" id="groups"></div>
-
-<div class="wrapper">
-
-<div class="board">
-
-<img src="bingo.jpg">
-
-<div class="grid" id="grid"></div>
-
-</div>
-
-</div>
+<div class="container" id="weaponContainer"></div>
 
 <script>
 
-const TOTAL=71
+const weaponData={
 
-/* 武器種ごとの数 */
+シューター:[
+"bold.png",
+"wakaba.png",
+"sharp.png",
+"pro.png",
+"splat.png",
+"galon52.png",
+"nzap.png",
+"prime.png",
+"galon96.png",
+"jet.png",
+"spzce.png",
+"l3.png",
+"h3.png",
+"bottle.png"
+],
 
-const groupCounts={
-シューター:7,
-ローラー:6,
-チャージャー:6,
-ブラスター:7,
-スロッシャー:6,
-スピナー:6,
-マニューバー:6,
-シェルター:4,
-フデ:5,
-ワイパー:5,
-ストリンガー:5,
-クマ武器:8
+ローラー:[
+"carbon.png",
+"dynamo.png",
+"splat.png",
+"variable.png",
+"wide.png"
+],
+
+チャージャー:[
+"squic.png",
+"splat.png",
+"liter.png",
+"take.png",
+"soi.png",
+"pen.png"
+],
+
+スロッシャー:[
+"bucket.png",
+"hissen.png",
+"screw.png",
+"over.png",
+"ex.png",
+"mop.png"
+],
+
+スピナー:[
+"splat.png",
+"barrel.png",
+"hyd.png",
+"cugel.png",
+"norch.png",
+"ixa.png"
+],
+
+マニューバー:[
+"spat.png",
+"splat.png",
+"kelbin.png",
+"dual.png",
+"quad.png",
+"gaen.png"
+],
+
+シェルター:[
+"para.png",
+"camp.png",
+"spy.png",
+"kasa.png"
+],
+  
+ブラスター:[
+"nova.png",
+"hot.png",
+"long.png",
+"crash.png",
+"rapid.png",
+"rapide.png",
+"sblast.png"
+],
+
+フデ:[
+"pablo.png",
+"hokusai.png",
+"fin.png"
+],
+
+ストリンガー:[
+"tri.png",
+"lact.png",
+"fluid.png"
+],
+
+ワイパー:[
+"jim.png",
+"drive.png",
+"dental.png"
+],
+
+クマ武器:[
+"stringer.png",
+"blaster.png",
+"shelter.png",
+"wiper.png",
+"slosher.png",
+"charger.png",
+"dualies.png",
+"roller.png"
+]
+
 }
 
-let state=JSON.parse(localStorage.getItem("salmonBingo")||{})
-
-/* 武器ID → グループ */
-
-let groupMap={}
-
-/* 簡易割当（後で正確にもできる） */
-
-let groupNames=Object.keys(groupCounts)
-
-for(let i=0;i<64;i++){
-
-groupMap["w"+i]=groupNames[i%11]
-
-}
-
-for(let i=0;i<8;i++){
-
-groupMap["k"+i]="クマ武器"
-
-}
+let state=JSON.parse(localStorage.getItem("salmonState")||"{}")
 
 function save(){
-
-localStorage.setItem("salmonBingo",JSON.stringify(state))
-
+localStorage.setItem("salmonState",JSON.stringify(state))
 }
 
-function toggle(id){
+function toggle(id,el){
 
 state[id]=!state[id]
 
+if(state[id]){
+el.classList.add("done")
+}else{
+el.classList.remove("done")
+}
+
 save()
 
-render()
+updateProgress()
 
 }
 
-function createGrid(){
+function createUI(){
 
-let grid=document.getElementById("grid")
+let container=document.getElementById("weaponContainer")
 
-for(let i=0;i<64;i++){
+for(let group in weaponData){
 
-let b=document.createElement("button")
+let row=document.createElement("div")
 
-b.className="cell"
+row.className="weaponRow"
 
-b.dataset.id="w"+i
+let title=document.createElement("h3")
+title.innerText=group
 
-b.onclick=()=>toggle("w"+i)
+let grid=document.createElement("div")
+grid.className="weaponGrid"
 
-grid.appendChild(b)
+weaponData[group].forEach(name=>{
+
+let btn=document.createElement("button")
+btn.className="weaponBtn"
+
+let img=document.createElement("img")
+img.src="weapons/"+group+"/"+name
+
+btn.appendChild(img)
+
+let id=group+"_"+name
+
+if(state[id]) btn.classList.add("done")
+
+btn.onclick=()=>toggle(id,btn)
+
+grid.appendChild(btn)
+
+})
+
+row.appendChild(title)
+row.appendChild(grid)
+
+container.appendChild(row)
 
 }
 
 }
 
-function render(){
+function updateProgress(){
 
+let total=0
 let done=0
 
-let groupDone={}
+for(let group in weaponData){
 
-for(let g in groupCounts){
+let gTotal=weaponData[group].length
+let gDone=0
 
-groupDone[g]=0
+weaponData[group].forEach(name=>{
 
-}
+let id=group+"_"+name
 
-document.querySelectorAll(".cell").forEach(b=>{
-
-let id=b.dataset.id
+total++
 
 if(state[id]){
-
-b.classList.add("done")
-
 done++
-
-groupDone[groupMap[id]]++
-
-}else{
-
-b.classList.remove("done")
-
+gDone++
 }
 
 })
 
-let percent=Math.floor(done/TOTAL*100)
+}
 
-document.getElementById("total").innerText=
+let percent=Math.floor(done/total*100)
 
-done+" / "+TOTAL+" ("+percent+"%)"
+document.getElementById("totalBar").style.width=percent+"%"
 
-document.getElementById("bar").style.width=
-
-percent+"%"
-
-/* グループ進捗 */
-
-let html=""
-
-for(let g in groupCounts){
-
-html+=g+" "+groupDone[g]+" / "+groupCounts[g]+"<br>"
+document.getElementById("totalText").innerText=
+done+" / "+total+" ("+percent+"%)"
 
 }
 
-document.getElementById("groups").innerHTML=html
+createUI()
 
-}
-
-function resetProgress(){
-
-if(confirm("本当にリセットしますか？")){
-
-state={}
-
-save()
-
-render()
-
-}
-
-}
-
-createGrid()
-
-render()
+updateProgress()
 
 </script>
 
