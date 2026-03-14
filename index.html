@@ -278,7 +278,7 @@ let btn=document.createElement("button")
 btn.className="weaponBtn"
 
 let img=document.createElement("img")
-img.src="weapons/"+group+"/"+name
+img.src=`weapons/${group}/${name}`
 
 btn.appendChild(img)
 
@@ -353,6 +353,8 @@ if(done===total){
 document.getElementById("totalText").innerText+=" 🎉ALL COMPLETE!"
 }
 
+}
+  
 function resetAll(){
 
 if(!confirm("進行状況をリセットしますか？")) return
