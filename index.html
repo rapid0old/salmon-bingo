@@ -30,11 +30,15 @@ justify-items:center;
 }
 
 .weaponBtn{
-width:80px;
-height:80px;
+width:90px;
+height:90px;
 border:none;
 background:none;
 padding:0;
+
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .weaponBtn img{
@@ -84,11 +88,11 @@ font-weight:bold;
 
 .resetBtn{
 margin:20px;
-padding:8px 20px;
-font-size:16px;
+padding:12px 28px;
+font-size:20px;
 background:#ff7b00;
 border:none;
-border-radius:6px;
+border-radius:8px;
 color:white;
 cursor:pointer;
 }
@@ -99,6 +103,27 @@ font-size:32px;
 
 h3{
 font-size:22px;
+}
+
+.weaponGrid.kuma{
+grid-template-columns:repeat(8,1fr);
+}
+
+button{
+font-size:18px;
+padding:10px 18px;
+margin:8px;
+border-radius:8px;
+}
+
+#totalText{
+font-size:28px;
+margin-top:10px;
+}
+
+#remainText{
+font-size:24px;
+margin-bottom:20px;
 }
 
 </style>
@@ -281,7 +306,11 @@ fill.id="bar_"+group
 bar.appendChild(fill)
 
 let grid=document.createElement("div")
+if(group==="クマ武器"){
+grid.className="weaponGrid kuma"
+}else{
 grid.className="weaponGrid"
+}
 
 weaponData[group].forEach(name=>{
 
