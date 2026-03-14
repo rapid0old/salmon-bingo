@@ -80,7 +80,7 @@ width:0%;
 
 <script>
 
-const weaponData={
+const weaponGroups = [
 
 { name:"シューター", folder:"shooter", weapons:[
 "bold.png",
@@ -191,55 +191,51 @@ const weaponData={
 
 }
 
-let state=JSON.parse(localStorage.getItem("salmonState")||"{}")
+let state = JSON.parse(localStorage.getItem("salmonState") || "{}")
 
 function save(){
-localStorage.setItem("salmonState",JSON.stringify(state))
+localStorage.setItem("salmonState", JSON.stringify(state))
 }
 
-function toggle(id,el){
+function toggle(id,btn){
 
-state[id]=!state[id]
+state[id] = !state[id]
 
-if(state[id]){
-el.classList.add("done")
-}else{
-el.classList.remove("done")
-}
+if(state[id]) btn.classList.add("done")
+else btn.classList.remove("done")
 
 save()
-
 updateProgress()
 
 }
 
 function createUI(){
 
-let container=document.getElementById("weaponContainer")
+const container=document.getElementById("weaponContainer")
 
-for(let group in weaponData){
+weaponGroups.forEach(group=>{
 
-let row=document.createElement("div")
-
+const row=document.createElement("div")
 row.className="weaponRow"
 
-let title=document.createElement("h3")
-title.innerText=group
+const title=document.createElement("h3")
+title.innerText=group.name
 
-let grid=document.createElement("div")
+const grid=document.createElement("div")
 grid.className="weaponGrid"
 
-weaponData[group].forEach(name=>{
+group.weapons.forEach(name=>{
 
-let btn=document.createElement("button")
+const btn=document.createElement("button")
 btn.className="weaponBtn"
 
-let img=document.createElement("img")
-img.src="weapons/"+group+"/"+name
+const img=document.createElement("img")
+
+img.src=`weapons/${group.folder}/${name}`
 
 btn.appendChild(img)
 
-let id=group+"_"+name
+const id=group.folder+"_"+name
 
 if(state[id]) btn.classList.add("done")
 
@@ -254,7 +250,7 @@ row.appendChild(grid)
 
 container.appendChild(row)
 
-}
+})
 
 }
 
@@ -263,25 +259,19 @@ function updateProgress(){
 let total=0
 let done=0
 
-for(let group in weaponData){
+weaponGroups.forEach(group=>{
 
-let gTotal=weaponData[group].length
-let gDone=0
+group.weapons.forEach(name=>{
 
-weaponData[group].forEach(name=>{
-
-let id=group+"_"+name
+const id=group.folder+"_"+name
 
 total++
 
-if(state[id]){
-done++
-gDone++
-}
+if(state[id]) done++
 
 })
 
-}
+})
 
 let percent=Math.floor(done/total*100)
 
@@ -293,7 +283,6 @@ done+" / "+total+" ("+percent+"%)"
 }
 
 createUI()
-
 updateProgress()
 
 </script>
