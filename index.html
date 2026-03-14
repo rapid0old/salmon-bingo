@@ -14,15 +14,15 @@ text-align:center;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 }
 
 .weaponRow{
 margin:30px auto;
-padding:20px;
+padding:25px;
 
-max-width:950px;
+max-width:980px;
 
 background:rgba(0,0,0,0.25);
 border-radius:14px;
@@ -117,7 +117,7 @@ font-size:22px;
 }
 
 .weaponGrid.kuma{
-grid-template-columns:repeat(8,1fr);
+grid-template-columns:repeat(8,110px);
 }
 
 button{
@@ -437,7 +437,7 @@ updateProgress()
 function showAll(){
 
 document.querySelectorAll(".weaponBtn").forEach(btn=>{
-btn.style.display="inline-block"
+btn.style.display=""
 })
 
 }
