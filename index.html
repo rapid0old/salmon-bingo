@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Salmon Run Bingo</title>
+
+<style>
+
+body{
+background:#0f1f1e;
+color:white;
+font-family:sans-serif;
+text-align:center;
+}
+
+.wrapper{
+max-width:900px;
+margin:auto;
+}
+
+.board{
+position:relative;
+}
+
+.board img{
+width:100%;
+}
+
+.grid{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:grid;
+grid-template-columns:repeat(8,1fr);
+grid-template-rows:repeat(8,1fr);
+}
+
+.cell{
+border:none;
+background:rgba(255,130,0,0);
+}
+
+.cell.done{
+background:rgba(255,130,0,0.5);
+}
+
+.progressText{
+margin-top:10px;
+font-size:18px;
+}
+
+.progressBar{
+width:80%;
+height:20px;
+background:#333;
+margin:auto;
+border-radius:10px;
+overflow:hidden;
+}
+
+.progressFill{
+height:100%;
+background:#ff7b00;
+width:0%;
+}
+
+.kuma{
+display:grid;
+grid-template-columns:repeat(8,1fr);
+gap:5px;
+margin-top:10px;
+}
+
+.resetBtn{
+margin-top:20px;
+padding:10px 20px;
+font-size:16px;
+background:#ff4d4d;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>サーモンラン武器ビンゴ</h2>
+
+<div class="progressBar">
+<div class="progressFill" id="bar"></div>
+</div>
+
+<div class="progressText" id="total"></div>
+
+<button class="resetBtn" onclick="resetProgress()">リセット</button>
+
+<div class="wrapper">
+
+<div class="board">
+
+<img src="bingo.png">
+
+<div class="grid" id="grid"></div>
+
+</div>
+
+<h3>クマ武器</h3>
+
+<div class="kuma" id="kuma"></div>
+
+</div>
+
+<script>
+
+const TOTAL=71
+
+let state=JSON.parse(localStorage.getItem("salmonBingo")||"{}")
+
+function save(){
+
+localStorage.setItem("salmonBingo",JSON.stringify(state))
+
+}
+
+function toggle(id){
+
+state[id]=!state[id]
+
+save()
+
+render()
+
+}
+
+function createGrid(){
+
+let grid=document.getElementById("grid")
+
+for(let i=0;i<64;i++){
+
+let b=document.createElement("button")
+
+b.className="cell"
+
+b.dataset.id="w"+i
+
+b.onclick=()=>toggle("w"+i)
+
+grid.appendChild(b)
+
+}
+
+}
+
+function createKuma(){
+
+let kuma=document.getElementById("kuma")
+
+for(let i=0;i<8;i++){
+
+let b=document.createElement("button")
+
+b.className="cell"
+
+b.style.height="40px"
+
+b.dataset.id="k"+i
+
+b.onclick=()=>toggle("k"+i)
+
+kuma.appendChild(b)
+
+}
+
+}
+
+function render(){
+
+let done=0
+
+document.querySelectorAll(".cell").forEach(b=>{
+
+let id=b.dataset.id
+
+if(state[id]){
+
+b.classList.add("done")
+
+done++
+
+}else{
+
+b.classList.remove("done")
+
+}
+
+})
+
+let percent=Math.floor(done/TOTAL*100)
+
+document.getElementById("total").innerText=
+
+done+" / "+TOTAL+" ("+percent+"%)"
+
+document.getElementById("bar").style.width=
+
+percent+"%"
+
+}
+
+function resetProgress(){
+
+if(confirm("本当にリセットしますか？")){
+
+state={}
+
+save()
+
+render()
+
+}
+
+}
+
+createGrid()
+
+createKuma()
+
+render()
+
+</script>
+
+</body>
+</html>
