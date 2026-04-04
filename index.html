@@ -22,12 +22,9 @@ margin:auto;
 .weaponRow{
 margin:30px auto;
 padding:25px;
-
 max-width:980px;
-
 background:rgba(0,0,0,0.25);
 border-radius:14px;
-
 box-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
 
@@ -45,7 +42,6 @@ height:90px;
 border:none;
 background:none;
 padding:0;
-
 display:flex;
 align-items:center;
 justify-content:center;
@@ -56,6 +52,21 @@ max-width:100%;
 max-height:100%;
 display:block;
 margin:auto;
+}
+
+.weaponItem{
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.weaponName{
+font-size:12px;
+margin-top:4px;
+}
+
+.hideName .weaponName{
+display:none;
 }
 
 .done{
@@ -109,40 +120,14 @@ color:white;
 cursor:pointer;
 }
 
-<button onclick="toggleName()">名前 ON/OFF</button>
-
-h2{
-font-size:32px;
-}
-
-h3{
-font-size:22px;
-}
-
 button{
-font-size:22px;
-padding:16px 28px;
-margin:10px;
+font-size:20px;
+padding:12px 20px;
+margin:8px;
 border-radius:10px;
-color:black;
-background:#eeeeee;
+background:#eee;
 border:none;
 cursor:pointer;
-}
-
-#totalText{
-font-size:28px;
-margin-top:10px;
-}
-
-#remainText{
-font-size:24px;
-margin-bottom:20px;
-}
-
-h3{
-font-size:26px;
-margin-bottom:10px;
 }
 
 .weaponBtn:hover{
@@ -162,33 +147,9 @@ width:100%;
 height:50px;
 }
 
-.weaponBtn img{
-max-width:100%;
-max-height:100%;
-}
-
-.weaponItem{
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.weaponName{
-font-size:12px;
-margin-top:4px;
-}
-
-.hideName .weaponName{
-display:none;
-}
-
-@media (max-width:600px){
-
 .weaponRow{
 padding:12px;
 margin:18px auto;
-}
-
 }
 
 }
@@ -204,6 +165,7 @@ margin:18px auto;
 <button class="resetBtn" onclick="resetAll()">リセット</button>
 <button onclick="showAll()">すべて</button>
 <button onclick="showRemain()">未取得のみ</button>
+<button onclick="toggleName()">名前 ON/OFF</button>
 
 <div class="progressBar">
 <div id="totalBar" class="fill"></div>
@@ -216,8 +178,8 @@ margin:18px auto;
 
 <script>
 
+// ===== データ =====
 const weaponData={
-
 シューター:[
 {img:"bold.png", name:"ボールドマーカー"},
 {img:"bottle.png", name:"ボトルガイザー"},
@@ -285,7 +247,7 @@ const weaponData={
 {img:"para.png", name:"パラシェルター"},
 {img:"spy.png", name:"スパイガジェット"}
 ],
-  
+
 ブラスター:[
 {img:"crash.png", name:"クラッシュブラスター"},
 {img:"hot.png", name:"ホットブラスター"},
@@ -315,48 +277,32 @@ const weaponData={
 ],
 
 クマ武器:[
-{img:"blaster.png", name:"クマサン印のブラスター"},
-{img:"charger.png", name:"クマサン印のチャージャー"},
-{img:"dualies.png", name:"クマサン印のマニューバー"},
-{img:"roller.png", name:"クマサン印のローラー"},
-{img:"shelter.png", name:"クマサン印のシェルター"},
-{img:"slosher.png", name:"クマサン印のスロッシャー"},
-{img:"stringer.png", name:"クマサン印のストリンガー"},
-{img:"wiper.png", name:"クマサン印のワイパー"}
+{img:"blaster.png", name:"ブラスター"},
+{img:"charger.png", name:"チャージャー"},
+{img:"dualies.png", name:"マニューバー"},
+{img:"roller.png", name:"ローラー"},
+{img:"shelter.png", name:"シェルター"},
+{img:"slosher.png", name:"スロッシャー"},
+{img:"stringer.png", name:"ストリンガー"},
+{img:"wiper.png", name:"ワイパー"}
 ]
-
 }
 
+// ===== 状態 =====
 let state=JSON.parse(localStorage.getItem("salmonState")||"{}")
+let showName = JSON.parse(localStorage.getItem("showName") ?? "true")
 
 function save(){
 localStorage.setItem("salmonState",JSON.stringify(state))
 }
 
-function toggle(id,el){
-
-state[id]=!state[id]
-
-if(state[id]){
-el.classList.add("done")
-}else{
-el.classList.remove("done")
-}
-
-save()
-
-updateProgress()
-
-}
-
+// ===== UI生成 =====
 function createUI(){
-
 let container=document.getElementById("weaponContainer")
 
 for(let group in weaponData){
 
 let row=document.createElement("div")
-
 row.className="weaponRow"
 
 let title=document.createElement("h3")
@@ -373,22 +319,18 @@ fill.id="bar_"+group
 bar.appendChild(fill)
 
 let grid=document.createElement("div")
-if(group==="クマ武器"){
-grid.className="weaponGrid kuma"
-}else{
 grid.className="weaponGrid"
-}
 
 weaponData[group].forEach(data=>{
 
 let btn=document.createElement("button")
 btn.className="weaponBtn"
 
-let img=document.createElement("img")
-img.src=`weapons/${group}/${data.img}`
-
 let wrapper=document.createElement("div")
 wrapper.className="weaponItem"
+
+let img=document.createElement("img")
+img.src=`weapons/${group}/${data.img}`
 
 let name=document.createElement("div")
 name.className="weaponName"
@@ -396,7 +338,6 @@ name.innerText=data.name
 
 wrapper.appendChild(img)
 wrapper.appendChild(name)
-
 btn.appendChild(wrapper)
 
 let id=group+"_"+data.img
@@ -412,17 +353,21 @@ grid.appendChild(btn)
 row.appendChild(title)
 row.appendChild(bar)
 row.appendChild(grid)
-
 container.appendChild(row)
-
+}
 }
 
+// ===== トグル =====
+function toggle(id,el){
+state[id]=!state[id]
+el.classList.toggle("done")
+save()
+updateProgress()
 }
 
+// ===== 進捗 =====
 function updateProgress(){
-
-let total=0
-let done=0
+let total=0, done=0
 
 for(let group in weaponData){
 
@@ -430,108 +375,55 @@ let gTotal=weaponData[group].length
 let gDone=0
 
 weaponData[group].forEach(data=>{
-
 let id=group+"_"+data.img
-
 total++
-
-if(state[id]){
-done++
-gDone++
-}
-
+if(state[id]){ done++; gDone++ }
 })
 
-let gPercent=Math.floor(gDone/gTotal*100)
-
-document.getElementById("bar_"+group).style.width=gPercent+"%"
+let percent=Math.floor(gDone/gTotal*100)
+document.getElementById("bar_"+group).style.width=percent+"%"
 
 let title=document.getElementById("title_"+group)
-
-title.innerText=group+" "+gDone+" / "+gTotal+" ("+gPercent+"%)"
-
-if(gDone===gTotal){
-title.innerText+=" ✅COMPLETE"
-title.classList.add("complete")
-}else{
-title.classList.remove("complete")
-}
-
+title.innerText=`${group} ${gDone} / ${gTotal} (${percent}%)`
 }
 
 let percent=Math.floor(done/total*100)
-
 document.getElementById("totalBar").style.width=percent+"%"
-
-document.getElementById("totalText").innerText=
-done+" / "+total+" ("+percent+"%)"
-
-if(done===total){
-document.getElementById("totalText").innerText+=" 🎉ALL COMPLETE!"
+document.getElementById("totalText").innerText=`${done} / ${total} (${percent}%)`
+document.getElementById("remainText").innerText=`残り ${total-done} 武器`
 }
 
-let remain=total-done
-document.getElementById("remainText").innerText="残り "+remain+" 武器"
-  
-}
-  
-function resetAll(){
-
-if(!confirm("進行状況をリセットしますか？")) return
-
-state={}
-save()
-
-document.querySelectorAll(".weaponBtn").forEach(btn=>{
-btn.classList.remove("done")
-})
-
-updateProgress()
-
-}
-
+// ===== 表示切替 =====
 function showAll(){
-
-document.querySelectorAll(".weaponBtn").forEach(btn=>{
-btn.style.display=""
-})
-
+document.querySelectorAll(".weaponBtn").forEach(b=>b.style.display="")
 }
 
 function showRemain(){
-
-document.querySelectorAll(".weaponBtn").forEach(btn=>{
-
-if(btn.classList.contains("done")){
-btn.style.display="none"
-}else{
-btn.style.display=""
-}
-
+document.querySelectorAll(".weaponBtn").forEach(b=>{
+b.style.display=b.classList.contains("done")?"none":""
 })
-
 }
 
-let showName = JSON.parse(localStorage.getItem("showName") ?? "true")
-
-function saveName(){
-localStorage.setItem("showName", JSON.stringify(showName))
-}
-
+// ===== 名前ON/OFF =====
 function toggleName(){
-showName = !showName
-saveName()
+showName=!showName
+localStorage.setItem("showName",JSON.stringify(showName))
 applyNameVisibility()
 }
 
 function applyNameVisibility(){
-if(showName){
-document.body.classList.remove("hideName")
-}else{
-document.body.classList.add("hideName")
-}
+document.body.classList.toggle("hideName", !showName)
 }
 
+// ===== リセット =====
+function resetAll(){
+if(!confirm("リセットする？")) return
+state={}
+save()
+location.reload()
+}
+
+// ===== 初期化 =====
 createUI()
 applyNameVisibility()
 updateProgress()
