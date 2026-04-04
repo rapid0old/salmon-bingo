@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>サーモンラン武器ビンゴ</title>
 
 <style>
@@ -15,7 +14,7 @@ text-align:center;
 }
 
 .container{
-max-width:1000px;
+max-width:1200px;
 width:95%;
 margin:auto;
 }
@@ -31,7 +30,7 @@ box-shadow:0 4px 10px rgba(0,0,0,0.4);
 
 .weaponGrid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(90px,1fr));
+grid-template-columns:repeat(8, 1fr); /* ←PCは8列くらいがちょうどいい */
 gap:18px;
 margin-top:10px;
 }
@@ -144,13 +143,18 @@ transition:0.15s;
 @media (max-width:600px){
 
 .weaponGrid{
-grid-template-columns:repeat(5,1fr);
-gap:8px;
+grid-template-columns:repeat(4, 1fr); /* ←スマホは4列 */
+gap:10px;
+}
+
+.weaponBtn{
+width:100%;
+aspect-ratio:1/1;
 }
 
 .weaponBtn img{
-width:75%;
-height:75%;
+width:80%;
+height:80%;
 }
 
 }
