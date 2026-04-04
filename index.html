@@ -143,18 +143,25 @@ transition:0.15s;
 @media (max-width:600px){
 
 .weaponGrid{
-grid-template-columns:repeat(10,1fr);
-gap:4px;
+grid-template-columns:repeat(5,1fr); /* ←5列にする */
+gap:8px;
 }
 
 .weaponBtn{
 width:100%;
-height:50px;
+aspect-ratio:1/1; /* 正方形維持 */
+height:auto;
 }
 
-.weaponRow{
-padding:12px;
-margin:18px auto;
+.weaponBtn img{
+width:75%;
+height:75%;
+object-fit:contain;
+}
+
+.weaponName{
+font-size:12px;
+margin-top:6px;
 }
 
 }
