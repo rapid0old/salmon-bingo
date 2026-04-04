@@ -143,6 +143,19 @@ transition:0.15s;
 
 @media (max-width:600px){
 
+.container{
+width:100%;
+max-width:none; /* ←これ重要 */
+padding:0 10px; /* 端の余白 */
+}
+
+.weaponRow{
+max-width:none; /* ←固定解除 */
+width:100%;
+padding:12px;
+margin:16px 0;
+}
+
 .weaponGrid{
 grid-template-columns:repeat(5,1fr); /* ←5列にする */
 gap:8px;
@@ -150,7 +163,7 @@ gap:8px;
 
 .weaponBtn{
 width:100%;
-aspect-ratio:1/1; /* 正方形維持 */
+aspect-ratio:1/1;
 height:auto;
 }
 
