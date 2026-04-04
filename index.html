@@ -48,16 +48,17 @@ justify-content:center;
 }
 
 .weaponBtn img{
-max-width:100%;
-max-height:100%;
-display:block;
-margin:auto;
+width:70px;          /* 横幅固定 */
+height:70px;         /* ← 高さも固定（これ重要） */
+object-fit:contain;  /* 画像を潰さず収める */
 }
 
 .weaponItem{
 display:flex;
 flex-direction:column;
 align-items:center;
+justify-content:flex-start; /* 上揃え */
+height:100px;               /* 全体の高さ固定 */
 }
 
 .weaponName{
@@ -66,7 +67,8 @@ color:white;
 white-space:normal;
 text-align:center;
 line-height:1.1;
-max-width:90px;   /* ← 幅制限でちゃんと折り返す */
+margin-top:4px;
+height:28px;  /* ← 名前エリア固定 */
 }
 
 .hideName .weaponName{
