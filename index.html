@@ -31,15 +31,14 @@ box-shadow:0 4px 10px rgba(0,0,0,0.4);
 
 .weaponGrid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(90px,90px));
+grid-template-columns:repeat(auto-fit, minmax(90px,1fr));
 gap:18px;
-justify-content:center;
 margin-top:10px;
 }
 
 .weaponBtn{
-width:90px;
-height:90px;
+width:100%;
+aspect-ratio:1/1;
 border:none;
 background:none;
 padding:0;
@@ -145,28 +144,13 @@ transition:0.15s;
 @media (max-width:600px){
 
 .weaponGrid{
-grid-template-columns:repeat(5,1fr); /* 均等に広げる */
+grid-template-columns:repeat(5,1fr);
 gap:8px;
 }
 
-.weaponBtn{
-width:100%;        /* ←追加（超重要） */
-aspect-ratio:1/1;  /* 正方形維持 */
-height:auto;
-}
-
 .weaponBtn img{
-width:75%;   /* ←割合にする */
+width:75%;
 height:75%;
-}
-
-.weaponName{
-font-size:14px;
-}
-
-.weaponRow{
-padding:12px;
-margin:18px auto;
 }
 
 }
