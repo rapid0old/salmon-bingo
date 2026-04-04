@@ -109,6 +109,8 @@ color:white;
 cursor:pointer;
 }
 
+<button onclick="toggleName()">名前 ON/OFF</button>
+
 h2{
 font-size:32px;
 }
@@ -165,6 +167,21 @@ max-width:100%;
 max-height:100%;
 }
 
+.weaponItem{
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.weaponName{
+font-size:12px;
+margin-top:4px;
+}
+
+.hideName .weaponName{
+display:none;
+}
+
 @media (max-width:600px){
 
 .weaponRow{
@@ -202,110 +219,110 @@ margin:18px auto;
 const weaponData={
 
 シューター:[
-"bold.png",
-"wakaba.png",
-"sharp.png",
-"pro.png",
-"splat.png",
-"galon52.png",
-"nzap.png",
-"prime.png",
-"galon96.png",
-"jetsweeper.png",
-"space.png",
-"l3.png",
-"h3.png",
-"bottle.png"
+{img:"bold.png", name:"ボールドマーカー"},
+{img:"bottle.png", name:"ボトルガイザー"},
+{img:"galon52.png", name:".52ガロン"},
+{img:"galon96.png", name:".96ガロン"},
+{img:"h3.png", name:"H3リールガン"},
+{img:"jetsweeper.png", name:"ジェットスイーパー"},
+{img:"l3.png", name:"L3リールガン"},
+{img:"nzap.png", name:"N-ZAP85"},
+{img:"prime.png", name:"プライムシューター"},
+{img:"pro.png", name:"プロモデラーMG"},
+{img:"sharp.png", name:"シャープマーカー"},
+{img:"space.png", name:"スペースシューター"},
+{img:"splat.png", name:"スプラシューター"},
+{img:"wakaba.png", name:"わかばシューター"}
 ],
 
 ローラー:[
-"carbon.png",
-"dynamo.png",
-"splat.png",
-"variable.png",
-"wide.png"
+{img:"carbon.png", name:"カーボンローラー"},
+{img:"dynamo.png", name:"ダイナモローラー"},
+{img:"splat.png", name:"スプラローラー"},
+{img:"variable.png", name:"ヴァリアブルローラー"},
+{img:"wide.png", name:"ワイドローラー"}
 ],
 
 チャージャー:[
-"squic.png",
-"splat.png",
-"litter.png",
-"take.png",
-"soi.png",
-"pen.png"
+{img:"litter.png", name:"リッター4K"},
+{img:"pen.png", name:"R-PEN/5H"},
+{img:"soi.png", name:"ソイチューバー"},
+{img:"splat.png", name:"スプラチャージャー"},
+{img:"squic.png", name:"スクイックリンα"},
+{img:"take.png", name:"14式竹筒銃・甲"}
 ],
 
 スロッシャー:[
-"bucket.png",
-"hissen.png",
-"screw.png",
-"over.png",
-"ex.png",
-"mop.png"
+{img:"bucket.png", name:"バケットスロッシャー"},
+{img:"ex.png", name:"エクスプロッシャー"},
+{img:"hissen.png", name:"ヒッセン"},
+{img:"mop.png", name:"モップリン"},
+{img:"over.png", name:"オーバーフロッシャー"},
+{img:"screw.png", name:"スクリュースロッシャー"}
 ],
 
 スピナー:[
-"splat.png",
-"barrel.png",
-"hyd.png",
-"cugel.png",
-"norch.png",
-"ixa.png"
+{img:"barrel.png", name:"バレルスピナー"},
+{img:"cugel.png", name:"クーゲルシュライバー"},
+{img:"hyd.png", name:"ハイドラント"},
+{img:"ixa.png", name:"イグザミナー"},
+{img:"norch.png", name:"ノーチラス47"},
+{img:"splat.png", name:"スプラスピナー"}
 ],
 
 マニューバー:[
-"spat.png",
-"splat.png",
-"kelbin.png",
-"dual.png",
-"quad.png",
-"gaen.png"
+{img:"dual.png", name:"デュアルスイーパー"},
+{img:"gaen.png", name:"ガエンFF"},
+{img:"kelbin.png", name:"ケルビン525"},
+{img:"quad.png", name:"クアッドホッパーブラック"},
+{img:"spat.png", name:"スパッタリー"},
+{img:"splat.png", name:"スプラマニューバー"}
 ],
 
 シェルター:[
-"para.png",
-"camp.png",
-"spy.png",
-"kasa.png"
+{img:"camp.png", name:"キャンピングシェルター"},
+{img:"kasa.png", name:"24式張替傘・甲"},
+{img:"para.png", name:"パラシェルター"},
+{img:"spy.png", name:"スパイガジェット"}
 ],
   
 ブラスター:[
-"nova.png",
-"hot.png",
-"long.png",
-"crash.png",
-"rapid.png",
-"rapide.png",
-"sblast.png"
+{img:"crash.png", name:"クラッシュブラスター"},
+{img:"hot.png", name:"ホットブラスター"},
+{img:"long.png", name:"ロングブラスター"},
+{img:"nova.png", name:"ノヴァブラスター"},
+{img:"rapid.png", name:"ラピッドブラスター"},
+{img:"rapide.png", name:"Rブラスターエリート"},
+{img:"sblast.png", name:"S-BLAST92"}
 ],
 
 フデ:[
-"pablo.png",
-"hokusai.png",
-"fin.png"
+{img:"fin.png", name:"フィンセント"},
+{img:"hokusai.png", name:"ホクサイ"},
+{img:"pablo.png", name:"パブロ"}
 ],
 
 ストリンガー:[
-"tri.png",
-"lact.png",
-"fluid.png"
+{img:"fluid.png", name:"フルイドV"},
+{img:"lact.png", name:"LACT-450"},
+{img:"tri.png", name:"トライストリンガー"}
 ],
 
 ワイパー:[
-"jim.png",
-"drive.png",
-"dental.png"
+{img:"dental.png", name:"デンタルワイパー"},
+{img:"drive.png", name:"ドライブワイパー"},
+{img:"jim.png", name:"ジムワイパー"}
 ],
 
 クマ武器:[
-"stringer.png",
-"blaster.png",
-"shelter.png",
-"wiper.png",
-"slosher.png",
-"charger.png",
-"dualies.png",
-"roller.png"
+{img:"blaster.png", name:"クマサン印のブラスター"},
+{img:"charger.png", name:"クマサン印のチャージャー"},
+{img:"dualies.png", name:"クマサン印のマニューバー"},
+{img:"roller.png", name:"クマサン印のローラー"},
+{img:"shelter.png", name:"クマサン印のシェルター"},
+{img:"slosher.png", name:"クマサン印のスロッシャー"},
+{img:"stringer.png", name:"クマサン印のストリンガー"},
+{img:"wiper.png", name:"クマサン印のワイパー"}
 ]
 
 }
@@ -362,17 +379,27 @@ grid.className="weaponGrid kuma"
 grid.className="weaponGrid"
 }
 
-weaponData[group].forEach(name=>{
+weaponData[group].forEach(data=>{
 
 let btn=document.createElement("button")
 btn.className="weaponBtn"
 
 let img=document.createElement("img")
-img.src=`weapons/${group}/${name}`
+img.src=`weapons/${group}/${data.img}`
 
-btn.appendChild(img)
+let wrapper=document.createElement("div")
+wrapper.className="weaponItem"
 
-let id=group+"_"+name
+let name=document.createElement("div")
+name.className="weaponName"
+name.innerText=data.name
+
+wrapper.appendChild(img)
+wrapper.appendChild(name)
+
+btn.appendChild(wrapper)
+
+let id=group+"_"+data.img
 
 if(state[id]) btn.classList.add("done")
 
@@ -402,9 +429,9 @@ for(let group in weaponData){
 let gTotal=weaponData[group].length
 let gDone=0
 
-weaponData[group].forEach(name=>{
+weaponData[group].forEach(data=>{
 
-let id=group+"_"+name
+let id=group+"_"+data.img
 
 total++
 
@@ -485,8 +512,28 @@ btn.style.display=""
 
 }
 
-createUI()
+let showName = JSON.parse(localStorage.getItem("showName") ?? "true")
 
+function saveName(){
+localStorage.setItem("showName", JSON.stringify(showName))
+}
+
+function toggleName(){
+showName = !showName
+saveName()
+applyNameVisibility()
+}
+
+function applyNameVisibility(){
+if(showName){
+document.body.classList.remove("hideName")
+}else{
+document.body.classList.add("hideName")
+}
+}
+
+createUI()
+applyNameVisibility()
 updateProgress()
 
 </script>
