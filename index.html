@@ -49,24 +49,27 @@ justify-content:center;
 
 .weaponBtn img{
 max-width:100%;
-max-height:100%;
-display:block;
-margin:auto;
+max-height:70px;
+object-fit:contain;
 }
 
 .weaponItem{
 display:flex;
 flex-direction:column;
 align-items:center;
+justify-content:flex-start; /* ←追加 */
 }
 
 .weaponName{
 font-size:11px;
 color:white;
-white-space:normal;
 text-align:center;
-line-height:1.1;
-max-width:90px;   /* ← 幅制限でちゃんと折り返す */
+line-height:1.2;
+
+max-width:90px;
+
+/* ↓ここが重要 */
+min-height:2.4em;   /* 2行分の最低高さ */
 }
 
 .hideName .weaponName{
