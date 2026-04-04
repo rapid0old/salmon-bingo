@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>サーモンラン武器ビンゴ</title>
 
 <style>
@@ -11,29 +10,18 @@ body{
 background:#0f1f1e;
 color:white;
 font-family:sans-serif;
-margin:0;
+text-align:center;
 }
 
 .container{
 max-width:1000px;
 width:95%;
-margin:0 auto;
-text-align:center;
-}
-
-/* 上UI */
-.controls{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-margin-bottom:10px;
+margin:auto;
 }
 
 .weaponRow{
 margin:30px auto;
 padding:25px;
-width:100%;
 max-width:980px;
 background:rgba(0,0,0,0.25);
 border-radius:14px;
@@ -69,15 +57,16 @@ object-fit:contain;
 display:flex;
 flex-direction:column;
 align-items:center;
-justify-content:flex-start;
+justify-content:flex-start; /* ←追加 */
 }
 
 .weaponName{
 font-size:11px;
+color:white;
 text-align:center;
 line-height:1.2;
 max-width:90px;
-min-height:2.4em;
+min-height:2.4em;   /* 2行分の最低高さ */
 margin-top:6px;
 }
 
@@ -94,7 +83,7 @@ border-radius:6px;
 width:80%;
 height:18px;
 background:#333;
-margin:10px auto;
+margin:auto;
 border-radius:10px;
 overflow:hidden;
 }
@@ -109,7 +98,7 @@ width:0%;
 width:70%;
 height:14px;
 background:#333;
-margin:10px auto 18px;
+margin:10px auto 18px auto;
 border-radius:10px;
 overflow:hidden;
 }
@@ -120,9 +109,15 @@ background:#ff7b00;
 width:0%;
 }
 
+.complete{
+color:#ffd700;
+font-weight:bold;
+}
+
 .resetBtn{
-padding:16px 28px;
-font-size:20px;
+margin:20px;
+padding:18px 36px;
+font-size:26px;
 background:#ff7b00;
 border:none;
 border-radius:10px;
@@ -131,8 +126,9 @@ cursor:pointer;
 }
 
 button{
-font-size:16px;
-padding:10px 16px;
+font-size:20px;
+padding:12px 20px;
+margin:8px;
 border-radius:10px;
 background:#eee;
 border:none;
@@ -144,67 +140,37 @@ transform:scale(1.1);
 transition:0.15s;
 }
 
-/* ===== スマホ ===== */
 @media (max-width:600px){
 
-.container{
-width:100%;
-max-width:none;
-padding:0 10px;
-}
-
-.weaponRow{
-max-width:none;
-padding:12px;
-margin:16px 0;
-}
-
 .weaponGrid{
-grid-template-columns:repeat(5,1fr);
-gap:8px;
+grid-template-columns:repeat(10,1fr);
+gap:4px;
 }
 
 .weaponBtn{
 width:100%;
-aspect-ratio:1/1;
-height:auto;
+height:50px;
 }
 
-.weaponBtn img{
-width:75%;
-height:75%;
-}
-
-.weaponName{
-font-size:12px;
-}
-
-.controls{
-gap:6px;
-}
-
-button{
-font-size:14px;
-padding:8px 12px;
+.weaponRow{
+padding:12px;
+margin:18px auto;
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
-
 <h2>サーモンラン武器ビンゴ</h2>
 
-<div class="controls">
 <button class="resetBtn" onclick="resetAll()">リセット</button>
 <button onclick="showAll()">すべて</button>
 <button onclick="showRemain()">未取得のみ</button>
 <button onclick="toggleName()">名前 ON/OFF</button>
-</div>
 
 <div class="progressBar">
 <div id="totalBar" class="fill"></div>
@@ -213,14 +179,119 @@ padding:8px 12px;
 <div id="totalText"></div>
 <div id="remainText"></div>
 
-<div id="weaponContainer"></div>
-
-</div>
+<div class="container" id="weaponContainer"></div>
 
 <script>
 
 // ===== データ =====
-const weaponData = {/* ←そのまま今のデータ貼る */}
+const weaponData={
+シューター:[
+{img:"bold.png", name:"ボールドマーカー"},
+{img:"bottle.png", name:"ボトルガイザー"},
+{img:"galon52.png", name:".52ガロン"},
+{img:"galon96.png", name:".96ガロン"},
+{img:"h3.png", name:"H3リールガン"},
+{img:"jetsweeper.png", name:"ジェットスイーパー"},
+{img:"l3.png", name:"L3リールガン"},
+{img:"nzap.png", name:"N-ZAP85"},
+{img:"prime.png", name:"プライムシューター"},
+{img:"pro.png", name:"プロモデラーMG"},
+{img:"sharp.png", name:"シャープマーカー"},
+{img:"space.png", name:"スペースシューター"},
+{img:"splat.png", name:"スプラシューター"},
+{img:"wakaba.png", name:"わかばシューター"}
+],
+
+ローラー:[
+{img:"carbon.png", name:"カーボンローラー"},
+{img:"dynamo.png", name:"ダイナモローラー"},
+{img:"splat.png", name:"スプラローラー"},
+{img:"variable.png", name:"ヴァリアブルローラー"},
+{img:"wide.png", name:"ワイドローラー"}
+],
+
+チャージャー:[
+{img:"litter.png", name:"リッター4K"},
+{img:"pen.png", name:"R-PEN/5H"},
+{img:"soi.png", name:"ソイチューバー"},
+{img:"splat.png", name:"スプラチャージャー"},
+{img:"squic.png", name:"スクイックリンα"},
+{img:"take.png", name:"14式竹筒銃・甲"}
+],
+
+スロッシャー:[
+{img:"bucket.png", name:"バケットスロッシャー"},
+{img:"ex.png", name:"エクスプロッシャー"},
+{img:"hissen.png", name:"ヒッセン"},
+{img:"mop.png", name:"モップリン"},
+{img:"over.png", name:"オーバーフロッシャー"},
+{img:"screw.png", name:"スクリュースロッシャー"}
+],
+
+スピナー:[
+{img:"barrel.png", name:"バレルスピナー"},
+{img:"cugel.png", name:"クーゲルシュライバー"},
+{img:"hyd.png", name:"ハイドラント"},
+{img:"ixa.png", name:"イグザミナー"},
+{img:"norch.png", name:"ノーチラス47"},
+{img:"splat.png", name:"スプラスピナー"}
+],
+
+マニューバー:[
+{img:"dual.png", name:"デュアルスイーパー"},
+{img:"gaen.png", name:"ガエンFF"},
+{img:"kelbin.png", name:"ケルビン525"},
+{img:"quad.png", name:"クアッドホッパーブラック"},
+{img:"spat.png", name:"スパッタリー"},
+{img:"splat.png", name:"スプラマニューバー"}
+],
+
+シェルター:[
+{img:"camp.png", name:"キャンピングシェルター"},
+{img:"kasa.png", name:"24式張替傘・甲"},
+{img:"para.png", name:"パラシェルター"},
+{img:"spy.png", name:"スパイガジェット"}
+],
+
+ブラスター:[
+{img:"crash.png", name:"クラッシュブラスター"},
+{img:"hot.png", name:"ホットブラスター"},
+{img:"long.png", name:"ロングブラスター"},
+{img:"nova.png", name:"ノヴァブラスター"},
+{img:"rapid.png", name:"ラピッドブラスター"},
+{img:"rapide.png", name:"Rブラスターエリート"},
+{img:"sblast.png", name:"S-BLAST92"}
+],
+
+フデ:[
+{img:"fin.png", name:"フィンセント"},
+{img:"hokusai.png", name:"ホクサイ"},
+{img:"pablo.png", name:"パブロ"}
+],
+
+ストリンガー:[
+{img:"fluid.png", name:"フルイドV"},
+{img:"lact.png", name:"LACT-450"},
+{img:"tri.png", name:"トライストリンガー"}
+],
+
+ワイパー:[
+{img:"dental.png", name:"デンタルワイパー"},
+{img:"drive.png", name:"ドライブワイパー"},
+{img:"jim.png", name:"ジムワイパー"}
+],
+
+クマ武器:[
+{img:"blaster.png", name:"ブラスター"},
+{img:"charger.png", name:"チャージャー"},
+{img:"dualies.png", name:"マニューバー"},
+{img:"roller.png", name:"ローラー"},
+{img:"shelter.png", name:"シェルター"},
+{img:"slosher.png", name:"スロッシャー"},
+{img:"stringer.png", name:"ストリンガー"},
+{img:"wiper.png", name:"ワイパー"}
+]
+}
 
 // ===== 状態 =====
 let state=JSON.parse(localStorage.getItem("salmonState")||"{}")
